@@ -10,7 +10,7 @@ var User;
 
 var userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
   interests: [{type: String}]
 });
 
@@ -58,6 +58,10 @@ userSchema.statics.authenticate = function(userObj, cb) {
     });
   });
 };
+
+userSchema.statics.interests = function(userObj, cb) {
+  User.
+}
 
 userSchema.statics.register = function(userObj, cb) {
   bcrypt.hash(userObj.password, 10, function(err, hash) {

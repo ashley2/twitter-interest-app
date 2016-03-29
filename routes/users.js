@@ -28,6 +28,18 @@ router.post('/authenticate', function(req, res) {
   });
 });
 
+
+router.post('/interests', User.authMiddleware, function(req, res){
+  User.findById(req.user._id, function(err, user){
+    if(err) {
+      res.status(400).send(err);
+    } else {
+      var token = user.generateToken();
+      res.cookie('ashleycookie', token).send(user);
+    }
+  }
+})
+
 router.post('/register', function(req, res) {
   User.register(req.body, function(err, user) {
     if(err){
