@@ -3,6 +3,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var jwt = require('jwt-simple');
+require('dotenv').config()
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -11,7 +12,7 @@ var User;
 var userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
   password: { type: String, required: true },
-  interests: [{type: String}]
+  interests: [String]
 });
 
 userSchema.statics.authMiddleware = function(req, res, next) {
@@ -49,6 +50,7 @@ userSchema.statics.authenticate = function(userObj, cb) {
     if(err || !dbUser) {
       return cb("Authentication failed.");
     }
+    console.log(dbUser)
     bcrypt.compare(userObj.password, dbUser.password, function(err, isGood) {
       if(err || !isGood) {
         return cb("Authentication failed.");
@@ -59,9 +61,11 @@ userSchema.statics.authenticate = function(userObj, cb) {
   });
 };
 
-userSchema.statics.interests = function(userObj, cb) {
-  User.
-}
+// userSchema.statics.interests = function(userObj, cb) {
+//   User.findById(userObj._id, function(err, user) {
+
+//   })
+// }
 
 userSchema.statics.register = function(userObj, cb) {
   bcrypt.hash(userObj.password, 10, function(err, hash) {
